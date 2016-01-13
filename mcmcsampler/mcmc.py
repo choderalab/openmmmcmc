@@ -86,7 +86,7 @@ import simtk.unit as u
 
 from openmmtools import integrators
 from mcmcsampler import thermodynamics
-from repex.timing import Timer
+from mcmcsampler.timing import Timer
 
 from abc import abstractmethod 
 
