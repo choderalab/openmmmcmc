@@ -8,7 +8,7 @@ from openmmtools import testsystems
 
 from pymbar import timeseries
 
-from repex.mcmc import HMCMove, GHMCMove, LangevinDynamicsMove, MonteCarloBarostatMove
+from mcmcsampler.mcmc import HMCMove, GHMCMove, LangevinDynamicsMove, MonteCarloBarostatMove
 import logging
 
 # Test various combinations of systems and MCMC schemes
@@ -25,7 +25,7 @@ debug = False # set to True only for manual debugging of this nose test
 
 def test_doctest():
     import doctest
-    from repex import mcmc
+    from mcmcsampler import mcmc
     doctest.testmod(mcmc)
 
 def test_minimizer_all_testsystems():
@@ -37,7 +37,7 @@ def test_minimizer_all_testsystems():
         
         testsystem = testsystem_class()
 
-        from repex import mcmc
+        from mcmcsampler import mcmc
         sampler_state = mcmc.SamplerState(testsystem.system, testsystem.positions)
 
         # Check if NaN.
@@ -82,15 +82,15 @@ def subtest_mcmc_expectation(testsystem, move_set):
     ndof = 3*system.getNumParticles() - system.getNumConstraints()
 
     # Create thermodynamic state
-    from repex.thermodynamics import ThermodynamicState
+    from mcmcsampler.thermodynamics import ThermodynamicState
     thermodynamic_state = ThermodynamicState(system=testsystem.system, temperature=temperature, pressure=pressure)
 
     # Create MCMC sampler.
-    from repex.mcmc import MCMCSampler
+    from mcmcsampler.mcmc import MCMCSampler
     sampler = MCMCSampler(thermodynamic_state, move_set=move_set, platform=platform)
 
     # Create sampler state.
-    from repex.mcmc import SamplerState
+    from mcmcsampler.mcmc import SamplerState
     sampler_state = SamplerState(system=testsystem.system, positions=testsystem.positions, platform=platform)
 
     # Equilibrate
