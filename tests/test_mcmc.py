@@ -60,8 +60,8 @@ def test_mcmc_expectations():
 
 def subtest_mcmc_expectation(testsystem, move_set):
     if debug: 
-        print testsystem.__class__.__name__
-        print str(move_set)
+        print(testsystem.__class__.__name__)
+        print(str(move_set))
 
     # Test settings.
     temperature = 298.0 * units.kelvin
@@ -95,7 +95,7 @@ def subtest_mcmc_expectation(testsystem, move_set):
 
     # Equilibrate
     for iteration in range(nequil):
-        #print "equilibration iteration %d / %d" % (iteration, nequil)
+        #print("equilibration iteration %d / %d" % (iteration, nequil))
 
         # Update sampler state.
         sampler_state = sampler.run(sampler_state, 1)
@@ -107,7 +107,7 @@ def subtest_mcmc_expectation(testsystem, move_set):
     temperature_n = np.zeros([niterations], np.float64) # temperature_n[i] is the instantaneous kinetic temperature from iteration i, in K
     volume_n = np.zeros([niterations], np.float64) # volume_n[i] is the volume from iteration i, in K
     for iteration in range(niterations):
-        if debug: print "iteration %d / %d" % (iteration, niterations)
+        if debug: print("iteration %d / %d" % (iteration, niterations))
 
         # Update sampler state.
         sampler_state = sampler.run(sampler_state, 1)
@@ -134,7 +134,7 @@ def subtest_mcmc_expectation(testsystem, move_set):
         skip_test = False
         if (potential_n.std() == 0.0):
             skip_test = True
-            if debug: print "Skipping potential test since variance is zero."
+            if debug: print("Skipping potential test since variance is zero.")
         if not skip_test:
             potential_expectation = testsystem.get_potential_expectation(thermodynamic_state) / kT
             potential_mean = potential_n.mean()            
@@ -147,20 +147,20 @@ def subtest_mcmc_expectation(testsystem, move_set):
                 test_passed = False
 
             if debug or (test_passed is False):
-                print "Potential energy expectation"
-                print "observed %10.5f +- %10.5f kT | expected %10.5f | error %10.5f +- %10.5f (%.1f sigma)" % (potential_mean, dpotential_mean, potential_expectation, potential_error, dpotential_mean, nsigma)
+                print("Potential energy expectation")
+                print("observed %10.5f +- %10.5f kT | expected %10.5f | error %10.5f +- %10.5f (%.1f sigma)" % (potential_mean, dpotential_mean, potential_expectation, potential_error, dpotential_mean, nsigma))
                 if test_passed:
-                    print "TEST PASSED"
+                    print("TEST PASSED")
                 else:                
-                    print "TEST FAILED"
-                print "----------------------------------------------------------------------------"
+                    print("TEST FAILED")
+                print("----------------------------------------------------------------------------")
 
     if ('get_volume_expectation' in dir(testsystem)):
         # Skip this check if the std dev is zero.
         skip_test = False
         if (volume_n.std() == 0.0):
             skip_test = True
-            if debug: print "Skipping volume test."
+            if debug: print("Skipping volume test.")
         if not skip_test:
             volume_expectation = testsystem.get_volume_expectation(thermodynamic_state) / (units.nanometers**3)
             volume_mean = volume_n.mean()            
@@ -173,13 +173,13 @@ def subtest_mcmc_expectation(testsystem, move_set):
                 test_passed = False
 
             if debug or (test_passed is False):
-                print "Volume expectation"
-                print "observed %10.5f +- %10.5f kT | expected %10.5f | error %10.5f +- %10.5f (%.1f sigma)" % (volume_mean, dvolume_mean, volume_expectation, volume_error, dvolume_mean, nsigma)
+                print("Volume expectation")
+                print("observed %10.5f +- %10.5f kT | expected %10.5f | error %10.5f +- %10.5f (%.1f sigma)" % (volume_mean, dvolume_mean, volume_expectation, volume_error, dvolume_mean, nsigma))
                 if test_passed:
-                    print "TEST PASSED"
+                    print("TEST PASSED")
                 else:                
-                    print "TEST FAILED"
-                print "----------------------------------------------------------------------------"
+                    print("TEST FAILED")
+                print("----------------------------------------------------------------------------")
 
                 
 
