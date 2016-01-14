@@ -24,7 +24,7 @@ env:
 
   global:
     - ORGNAME="omnia" # the name of the organization
-    - PACKAGENAME="openmm_mcmc" # the name of your package
+    - PACKAGENAME="openmmmcmc" # the name of your package
 after_success:
     - echo "after_success"
     - if [ "$TRAVIS_SECURE_ENV_VARS" == true ]; then source devtools/travis-ci/after_success.sh; fi
