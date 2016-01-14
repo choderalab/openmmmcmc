@@ -1,5 +1,5 @@
 package:
-  name: openmm-mcmc-dev
+  name: openmmmcmc-dev
   version: !!str 0.0.0
 
 source:
@@ -38,5 +38,5 @@ test:
     - mcmcsampler
 
 about:
-  home: https://github.com/choderalab/perses
+  home: https://github.com/choderalab/openmm-mcmc
   license: GNU Lesser General Public License v2 or later (LGPLv2+)
