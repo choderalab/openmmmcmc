@@ -35,7 +35,7 @@ test:
     - openmmtools
     - pymbar
   imports:
-    - openmmmcmcsampler
+    - openmmmcmc
 
 about:
   home: https://github.com/choderalab/openmmmcmc
