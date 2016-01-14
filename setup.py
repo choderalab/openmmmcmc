@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""mcmcsampler: MCMC sampling framework for OpenMM
+"""openmmmcmc: MCMC sampling framework for OpenMM
 """
 
 from __future__ import print_function, absolute_import
@@ -66,8 +66,8 @@ Programming Language :: Python :: 3.4
 extensions = []
 
 setup(name='openmmmcmc',
-      author='Patrick Grinaway',
-      author_email='patrick.grinaway@choderalab.org',
+      author='John D. Chodera',
+      author_email='john.chodera@choderalab.org',
       description=DOCLINES[0],
       long_description="\n".join(DOCLINES[2:]),
       version=__version__,
