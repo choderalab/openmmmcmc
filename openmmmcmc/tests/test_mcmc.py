@@ -14,8 +14,8 @@ import logging
 
 # Test various combinations of systems and MCMC schemes
 analytical_testsystems = [
-    ("HarmonicOscillatorArray", [ GHMCMove() ]),
-    ("HarmonicOscillatorArray", { GHMCMove() : 0.5, HMCMove() : 0.5 }),
+    ("HarmonicOscillator", [ GHMCMove() ]),
+    ("HarmonicOscillator", { GHMCMove() : 0.5, HMCMove() : 0.5 }),
     ("HarmonicOscillatorArray", [ LangevinDynamicsMove() ]),
     ("IdealGas", [ HMCMove(), MonteCarloBarostatMove() ])
     ]
