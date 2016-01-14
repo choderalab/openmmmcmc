@@ -19,9 +19,9 @@ def benchmark(function, name=None):
         start = time.time()
         result = function(*args, **kw)
         end = time.time()
-        
+
         delta = end - start
-            
+
         TIMINGS[name] = delta
         logger.debug("Benchmarking %s: Start: %f.  End: %f.  Delta: %f" % (name, start, end, delta))
         return result
@@ -41,11 +41,11 @@ class TimeContext(object):
         self.time = 0
         self.start = None
         self.end = None
-    
+
     def __enter__(self):
         self.start = time.time()
         return self
-    
+
     def __exit__(self, ty, val, tb):
         self.end = time.time()
         self.time = self.end - self.start
@@ -56,14 +56,14 @@ class TimeContext(object):
 
 class Timer(object):
     """A class with stopwatch-style timing functions.
-    
+
     Notes
     -----
-    To use this, first initialize a Timer, then call 
+    To use this, first initialize a Timer, then call
     start(keyword) and stop(keyword) at various points in the code to be benchmarked.
     Finally, print the timings with report_timings()
     """
-    
+
     def __init__(self):
         self.reset_timing_statistics()
 
@@ -71,7 +71,7 @@ class Timer(object):
     def reset_timing_statistics(self):
         """Reset the timing statistics.
         """
-      
+
         self._t0 = {}
         self._t1 = {}
         self._elapsed = {}
@@ -81,13 +81,13 @@ class Timer(object):
             if not hasattr(self, key):
                 self.reset_timing_statistics()
 
-    
+
     def start(self, keyword):
         """Start a timer with given keyword."""
-        
-        self.check_initialized()        
+
+        self.check_initialized()
         self._t0[keyword] = time.time()
-    
+
     def stop(self, keyword):
         if keyword in self._t0:
             self._t1[keyword] = time.time()
@@ -99,16 +99,16 @@ class Timer(object):
     def report_timing(self, clear=True):
         """
         Report the timing for a move type.
-        
+
         """
         self.check_initialized()
 
         logger.debug("Saved timings:")
 
-        for keyword, time in self._elapsed.iteritems():
+        for keyword, time in self._elapsed.items():
             logger.debug("%24s %8.3f s" % (keyword, time))
-        
+
         if clear == True:
             self.reset_timing_statistics()
-        
+
         return
