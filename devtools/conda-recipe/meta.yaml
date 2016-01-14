@@ -16,7 +16,7 @@ requirements:
     - openmm-dev
     - numpy
     - scipy
-    - openmoltools-dev
+    - openmoltools
     - openmmtools
     - pymbar
 
@@ -25,7 +25,7 @@ requirements:
     - openmm-dev
     - numpy
     - scipy
-    - openmoltools-dev
+    - openmoltools
     - openmmtools
     - pymbar
 
