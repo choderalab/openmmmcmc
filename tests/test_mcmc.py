@@ -10,6 +10,8 @@ from pymbar import timeseries
 
 from openmmmcmc.mcmc import HMCMove, GHMCMove, LangevinDynamicsMove, MonteCarloBarostatMove
 import logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 # Test various combinations of systems and MCMC schemes
 analytical_testsystems = [
@@ -21,12 +23,7 @@ analytical_testsystems = [
 
 NSIGMA_CUTOFF = 6.0 # cutoff for significance testing
 
-debug = False # set to True only for manual debugging of this nose test
-
-def test_doctest():
-    import doctest
-    from openmmmcmc import mcmc
-    doctest.testmod(mcmc)
+debug = True # set to True only for manual debugging of this nose test
 
 def test_minimizer_all_testsystems():
     #testsystem_classes = testsystems.TestSystem.__subclasses__()
@@ -34,23 +31,30 @@ def test_minimizer_all_testsystems():
 
     for testsystem_class in testsystem_classes:
         class_name = testsystem_class.__name__
-        logging.info("Testing minimization with testsystem %s" % class_name)
+        logger.info("Testing minimization with testsystem %s" % class_name)
+        print("Testing minimization with testsystem %s" % class_name)
 
         testsystem = testsystem_class()
 
+        print("Creating SamplerState...")
         from openmmmcmc import mcmc
         sampler_state = mcmc.SamplerState(testsystem.system, testsystem.positions)
 
         # Check if NaN.
+        print("Checking potential energy is not NaN")
         if np.isnan(sampler_state.potential_energy / units.kilocalories_per_mole):
             raise Exception("Initial energy of system %s yielded NaN" % class_name)
 
         # Minimize
+        print("Minimizing...")
         sampler_state.minimize(maxIterations=1)
 
         # Check if NaN.
+        print("Checking potential energy is not NaN")
         if np.isnan(sampler_state.potential_energy / units.kilocalories_per_mole):
             raise Exception("Minimization of system %s yielded NaN" % class_name)
+
+        print("Done.")
 
 def test_mcmc_expectations():
     # Select system:
