@@ -7,6 +7,7 @@ import openmmtools.testsystems
 from openmmtools import testsystems
 
 from pymbar import timeseries
+from functools import partial
 
 from openmmmcmc.mcmc import HMCMove, GHMCMove, LangevinDynamicsMove, MonteCarloBarostatMove
 import logging
@@ -52,7 +53,12 @@ def test_mcmc_expectations():
     for [system_name, move_set] in analytical_testsystems:
         testsystem_class = getattr(openmmtools.testsystems, system_name)
         testsystem = testsystem_class()
+        class_name = testsystem_class.__name__
         subtest_mcmc_expectation(testsystem, move_set)
+        f = partial(subtest_mcmc_expectation, testsystem, move_set)
+        f.description = "Testing MCMC expectation for testsystem %s" % class_name
+        logging.info(f.description)
+        yield f
 
 def subtest_mcmc_expectation(testsystem, move_set):
     if debug:
