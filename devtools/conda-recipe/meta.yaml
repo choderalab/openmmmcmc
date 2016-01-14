@@ -35,8 +35,8 @@ test:
     - openmmtools
     - pymbar
   imports:
-    - mcmcsampler
+    - openmmmcmcsampler
 
 about:
-  home: https://github.com/choderalab/openmm-mcmc
+  home: https://github.com/choderalab/openmmmcmc
   license: GNU Lesser General Public License v2 or later (LGPLv2+)
