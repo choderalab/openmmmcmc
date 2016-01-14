@@ -32,7 +32,7 @@ Construct a simple MCMC simulation using Langevin dynamics moves.
 >>> test = testsystems.AlanineDipeptideVacuum()
 >>> # Create a thermodynamic state.
 >>> import simtk.unit as u
->>> from mcmcsampler.thermodynamics import ThermodynamicState
+>>> from openmm_mcmc.thermodynamics import ThermodynamicState
 >>> thermodynamic_state = ThermodynamicState(system=test.system, temperature=298*u.kelvin)
 >>> # Create a sampler state.
 >>> sampler_state = SamplerState(system=test.system, positions=test.positions)
@@ -85,8 +85,8 @@ import simtk.openmm as mm
 import simtk.unit as u
 
 from openmmtools import integrators
-from mcmcsampler import thermodynamics
-from mcmcsampler.timing import Timer
+from openmm_mcmc import thermodynamics
+from openmm_mcmc.timing import Timer
 
 from abc import abstractmethod 
 
@@ -454,7 +454,7 @@ class MCMCSampler(object):
     >>> test = testsystems.AlanineDipeptideVacuum()
     >>> # Create a thermodynamic state.
     >>> import simtk.unit as u
-    >>> from mcmcsampler.thermodynamics import ThermodynamicState
+    >>> from openmm_mcmc.thermodynamics import ThermodynamicState
     >>> thermodynamic_state = ThermodynamicState(system=test.system, temperature=298*u.kelvin)
     >>> # Create a sampler state.
     >>> sampler_state = SamplerState(system=test.system, positions=test.positions)
@@ -490,7 +490,7 @@ class MCMCSampler(object):
         >>> test = testsystems.AlanineDipeptideVacuum()
         >>> # Create a thermodynamic state.
         >>> import simtk.unit as u
-        >>> from mcmcsampler.thermodynamics import ThermodynamicState
+        >>> from openmm_mcmc.thermodynamics import ThermodynamicState
         >>> thermodynamic_state = ThermodynamicState(system=test.system, temperature=298*u.kelvin)
         >>> # Create a sampler state.
         >>> sampler_state = SamplerState(system=test.system, positions=test.positions)
@@ -540,7 +540,7 @@ class MCMCSampler(object):
         >>> test = testsystems.AlanineDipeptideVacuum()
         >>> # Create a thermodynamic state.
         >>> import simtk.unit as u
-        >>> from mcmcsampler.thermodynamics import ThermodynamicState
+        >>> from openmm_mcmc.thermodynamics import ThermodynamicState
         >>> thermodynamic_state = ThermodynamicState(system=test.system, temperature=298*u.kelvin)
         >>> # Create a sampler state.
         >>> sampler_state = SamplerState(system=test.system, positions=test.positions)
@@ -609,7 +609,7 @@ class LangevinDynamicsMove(MCMCMove):
     >>> # Create a sampler state.
     >>> sampler_state = SamplerState(system=test.system, positions=test.positions)
     >>> # Create a thermodynamic state.
-    >>> from mcmcsampler.thermodynamics import ThermodynamicState
+    >>> from openmm_mcmc.thermodynamics import ThermodynamicState
     >>> thermodynamic_state = ThermodynamicState(system=test.system, temperature=298*u.kelvin)
     >>> # Create a LangevinDynamicsMove
     >>> move = LangevinDynamicsMove(nsteps=10)
@@ -685,7 +685,7 @@ class LangevinDynamicsMove(MCMCMove):
         >>> # Create a sampler state.
         >>> sampler_state = SamplerState(system=test.system, positions=test.positions)
         >>> # Create a thermodynamic state.
-        >>> from mcmcsampler.thermodynamics import ThermodynamicState
+        >>> from openmm_mcmc.thermodynamics import ThermodynamicState
         >>> thermodynamic_state = ThermodynamicState(system=test.system, temperature=298*u.kelvin)
         >>> # Create a LangevinDynamicsMove
         >>> move = LangevinDynamicsMove(nsteps=10, timestep=0.5*u.femtoseconds, collision_rate=20.0/u.picoseconds)
@@ -703,7 +703,7 @@ class LangevinDynamicsMove(MCMCMove):
         >>> # Create a sampler state.
         >>> sampler_state = SamplerState(system=test.system, positions=test.positions)
         >>> # Create a thermodynamic state.
-        >>> from mcmcsampler.thermodynamics import ThermodynamicState
+        >>> from openmm_mcmc.thermodynamics import ThermodynamicState
         >>> thermodynamic_state = ThermodynamicState(system=test.system, temperature=298*u.kelvin)
         >>> # Create a LangevinDynamicsMove
         >>> move = LangevinDynamicsMove(nsteps=500, timestep=0.5*u.femtoseconds, collision_rate=20.0/u.picoseconds)
@@ -788,7 +788,7 @@ class GHMCMove(MCMCMove):
     >>> # Minimize.
     >>> sampler_state.minimize()
     >>> # Create a thermodynamic state.
-    >>> from mcmcsampler.thermodynamics import ThermodynamicState
+    >>> from openmm_mcmc.thermodynamics import ThermodynamicState
     >>> thermodynamic_state = ThermodynamicState(system=test.system, temperature=298*u.kelvin)
     >>> # Create a GHMC move
     >>> move = GHMCMove(nsteps=10)
@@ -846,7 +846,7 @@ class GHMCMove(MCMCMove):
         >>> # Create a sampler state.
         >>> sampler_state = SamplerState(system=test.system, positions=test.positions)
         >>> # Create a thermodynamic state.
-        >>> from mcmcsampler.thermodynamics import ThermodynamicState
+        >>> from openmm_mcmc.thermodynamics import ThermodynamicState
         >>> thermodynamic_state = ThermodynamicState(system=test.system, temperature=298*u.kelvin)
         >>> # Create a LangevinDynamicsMove
         >>> move = GHMCMove(nsteps=10, timestep=1.0*u.femtoseconds, collision_rate=20.0/u.picoseconds)
@@ -886,7 +886,7 @@ class GHMCMove(MCMCMove):
         >>> # Create a sampler state.
         >>> sampler_state = SamplerState(system=test.system, positions=test.positions)
         >>> # Create a thermodynamic state.
-        >>> from mcmcsampler.thermodynamics import ThermodynamicState
+        >>> from openmm_mcmc.thermodynamics import ThermodynamicState
         >>> thermodynamic_state = ThermodynamicState(system=test.system, temperature=298*u.kelvin)
         >>> # Create a LangevinDynamicsMove
         >>> move = GHMCMove(nsteps=10, timestep=1.0*u.femtoseconds, collision_rate=20.0/u.picoseconds)
@@ -928,7 +928,7 @@ class GHMCMove(MCMCMove):
         >>> # Create a sampler state.
         >>> sampler_state = SamplerState(system=test.system, positions=test.positions)
         >>> # Create a thermodynamic state.
-        >>> from mcmcsampler.thermodynamics import ThermodynamicState
+        >>> from openmm_mcmc.thermodynamics import ThermodynamicState
         >>> thermodynamic_state = ThermodynamicState(system=test.system, temperature=298*u.kelvin)
         >>> # Create a LangevinDynamicsMove
         >>> move = GHMCMove(nsteps=10, timestep=1.0*u.femtoseconds, collision_rate=20.0/u.picoseconds)
@@ -1003,7 +1003,7 @@ class HMCMove(MCMCMove):
     >>> # Create a sampler state.
     >>> sampler_state = SamplerState(system=test.system, positions=test.positions)
     >>> # Create a thermodynamic state.
-    >>> from mcmcsampler.thermodynamics import ThermodynamicState
+    >>> from openmm_mcmc.thermodynamics import ThermodynamicState
     >>> thermodynamic_state = ThermodynamicState(system=test.system, temperature=298*u.kelvin)
     >>> # Create an HMC move.
     >>> move = HMCMove(nsteps=10)
@@ -1066,7 +1066,7 @@ class HMCMove(MCMCMove):
         >>> # Create a sampler state.
         >>> sampler_state = SamplerState(system=test.system, positions=test.positions)
         >>> # Create a thermodynamic state.
-        >>> from mcmcsampler.thermodynamics import ThermodynamicState
+        >>> from openmm_mcmc.thermodynamics import ThermodynamicState
         >>> thermodynamic_state = ThermodynamicState(system=test.system, temperature=298*u.kelvin)
         >>> # Create an HMC move.
         >>> move = HMCMove(nsteps=10, timestep=0.5*u.femtoseconds)
@@ -1127,7 +1127,7 @@ class MonteCarloBarostatMove(MCMCMove):
     >>> # Create a sampler state.
     >>> sampler_state = SamplerState(system=test.system, positions=test.positions, box_vectors=test.system.getDefaultPeriodicBoxVectors())
     >>> # Create a thermodynamic state.
-    >>> from mcmcsampler.thermodynamics import ThermodynamicState
+    >>> from openmm_mcmc.thermodynamics import ThermodynamicState
     >>> thermodynamic_state = ThermodynamicState(system=test.system, temperature=298*u.kelvin, pressure=1*u.atmospheres)
     >>> # Create a move set that includes a Monte Carlo barostat move.
     >>> move_set = [ GHMCMove(nsteps=50), MonteCarloBarostatMove(nattempts=5) ]
@@ -1190,7 +1190,7 @@ class MonteCarloBarostatMove(MCMCMove):
         >>> # Create a sampler state.
         >>> sampler_state = SamplerState(system=test.system, positions=test.positions, box_vectors=test.system.getDefaultPeriodicBoxVectors())
         >>> # Create a thermodynamic state.
-        >>> from mcmcsampler.thermodynamics import ThermodynamicState
+        >>> from openmm_mcmc.thermodynamics import ThermodynamicState
         >>> thermodynamic_state = ThermodynamicState(system=test.system, temperature=298*u.kelvin, pressure=1*u.atmospheres)
         >>> # Create a Monte Carlo Barostat move.
         >>> move = MonteCarloBarostatMove(nattempts=5)
