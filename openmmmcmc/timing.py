@@ -105,7 +105,7 @@ class Timer(object):
 
         logger.debug("Saved timings:")
 
-        for keyword, time in self._elapsed.iteritems():
+        for keyword, time in self._elapsed.items():
             logger.debug("%24s %8.3f s" % (keyword, time))
         
         if clear == True:
