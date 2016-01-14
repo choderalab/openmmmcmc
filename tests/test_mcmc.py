@@ -46,7 +46,7 @@ def test_minimizer_all_testsystems():
             raise Exception("Initial energy of system %s yielded NaN" % class_name)
 
         # Minimize
-        #sampler_state.minimize(maxIterations=0)
+        sampler_state.minimize(maxIterations=1)
 
         # Check if NaN.
         if np.isnan(sampler_state.potential_energy / units.kilocalories_per_mole):
