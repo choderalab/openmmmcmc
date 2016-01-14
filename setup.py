@@ -65,7 +65,7 @@ Programming Language :: Python :: 3.4
 
 extensions = []
 
-setup(name='mcmcsampler',
+setup(name='openmm_mcmc',
       author='Patrick Grinaway',
       author_email='patrick.grinaway@choderalab.org',
       description=DOCLINES[0],
@@ -74,7 +74,7 @@ setup(name='mcmcsampler',
       url='https://github.com/choderalab/openmm-mcmc',
       platforms=['Linux', 'Mac OS-X', 'Unix'],
       classifiers=CLASSIFIERS.splitlines(),
-      packages=['mcmcsampler', 'mcmcsampler.tests'],
+      packages=['openmm_mcmc', 'openmm_mcmc.tests'],
       package_data={},
       zip_safe=False,
       ext_modules=extensions,
