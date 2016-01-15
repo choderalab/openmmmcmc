@@ -14,10 +14,10 @@ import logging
 
 # Test various combinations of systems and MCMC schemes
 analytical_testsystems = [
-    ("HarmonicOscillator", [ GHMCMove() ]),
-    ("HarmonicOscillator", { GHMCMove() : 0.5, HMCMove() : 0.5 }),
-    ("HarmonicOscillatorArray", [ LangevinDynamicsMove() ]),
-    ("IdealGas", [ HMCMove(), MonteCarloBarostatMove() ])
+    ("HarmonicOscillator", testsystems.HarmonicOscillator(), [ GHMCMove() ]),
+    ("HarmonicOscillator", testsystems.HarmonicOscillator(), { GHMCMove() : 0.5, HMCMove() : 0.5 }),
+    ("HarmonicOscillatorArray", testsystems.HarmonicOscillatorArray(N=4), [ LangevinDynamicsMove() ]),
+    ("IdealGas", testsystems.IdealGas(nparticles=64), [ HMCMove(), MonteCarloBarostatMove() ])
     ]
 
 NSIGMA_CUTOFF = 6.0 # cutoff for significance testing
@@ -50,13 +50,11 @@ def test_minimizer_all_testsystems():
 
 def test_mcmc_expectations():
     # Select system:
-    for [system_name, move_set] in analytical_testsystems:
+    for [system_name, testsystem, move_set] in analytical_testsystems:
         testsystem_class = getattr(openmmtools.testsystems, system_name)
-        testsystem = testsystem_class()
-        class_name = testsystem_class.__name__
         subtest_mcmc_expectation(testsystem, move_set)
         f = partial(subtest_mcmc_expectation, testsystem, move_set)
-        f.description = "Testing MCMC expectation for testsystem %s" % class_name
+        f.description = "Testing MCMC expectation for %s" % system_name
         logging.info(f.description)
         yield f
 
