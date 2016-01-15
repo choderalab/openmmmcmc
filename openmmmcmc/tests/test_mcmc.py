@@ -14,10 +14,10 @@ import logging
 
 # Test various combinations of systems and MCMC schemes
 analytical_testsystems = [
-    ("HarmonicOscillator", testsystems.HarmonicOscillator(), [ GHMCMove() ]),
-    ("HarmonicOscillator", testsystems.HarmonicOscillator(), { GHMCMove() : 0.5, HMCMove() : 0.5 }),
-    ("HarmonicOscillatorArray", testsystems.HarmonicOscillatorArray(N=4), [ LangevinDynamicsMove() ]),
-    ("IdealGas", testsystems.IdealGas(nparticles=64), [ HMCMove(), MonteCarloBarostatMove() ])
+    ("HarmonicOscillator", testsystems.HarmonicOscillator(), [ GHMCMove(timestep=10.0*units.femtoseconds,nsteps=100) ]),
+    ("HarmonicOscillator", testsystems.HarmonicOscillator(), { GHMCMove(timestep=10.0*units.femtoseconds,nsteps=100) : 0.5, HMCMove(timestep=10*units.femtosecond, nsteps=10) : 0.5 }),
+    ("HarmonicOscillatorArray", testsystems.HarmonicOscillatorArray(N=4), [ LangevinDynamicsMove(timestep=10.0*units.femtoseconds,nsteps=100) ]),
+    ("IdealGas", testsystems.IdealGas(nparticles=216), [ HMCMove(timestep=10*units.femtosecond, nsteps=10), MonteCarloBarostatMove() ])
     ]
 
 NSIGMA_CUTOFF = 6.0 # cutoff for significance testing
@@ -67,7 +67,7 @@ def subtest_mcmc_expectation(testsystem, move_set):
     temperature = 298.0 * units.kelvin
     pressure = 1.0 * units.atmospheres
     nequil = 10 # number of equilibration iterations
-    niterations = 20 # number of production iterations
+    niterations = 40 # number of production iterations
 
     # Retrieve system and positions.
     [system, positions] = [testsystem.system, testsystem.positions]
