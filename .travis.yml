@@ -25,6 +25,9 @@ env:
   global:
     - ORGNAME="omnia" # the name of the organization
     - PACKAGENAME="openmmmcmc" # the name of your package
+    # encrypted BINSTAR_TOKEN for push of dev package to binstar
+    - secure: "M3djmH1yvasKRVESgS285MQUfW6fwsUXOGeI5MVfO7rnx1aN6TUIEdCUAiutfIRotZ5oFMPU+IDBxhjyEsUCUFzmGlRQ7pTak/Sp9Z0Lhgy1GKu5c8V3l6PmCylHExJ94IYv6sJb4n1IS+N7CILnLtOgQBg5q0po0WjLsuZ/zgCpkLUzY/pbu9ZIfqUx4F0iY5eF8332urPMfKmxV6vgj0g9j072d4l7sH5QHXNUQTU2XsebDqiHXrs2tgN9xx/Om2vpHCSprkOgnmmJaUvyx8XZfGFy+GqrDG+zBBsEawePHGGBvR29Eqk253667xsAiY55xoyxZgVkUDZFV/bNZ0pKSXXgKtaH7+8nExQPsqNUCcB7fE+xmR1uhlNJJC136ibG9V22JChgllIzNaZ0VC0kAAjGlpKsCqCuN+6tF1R+1/DEyZRUAkDQjTnIYZEgHfPKF+nr0jJViQodSc/vWj6n0xrngGy4JB6nNC8VQ74HoVUuMO2MApsSDnT3IIlDKt6e6UYVDEYy96FUypnDlOMo0BFBdLQNx8TbVF7RrksFArhuYlr0vSfQPSx5/+bHfxFfxDLDK9n2RndB5yKnYY0VqmqlG5OPvhXYcSpUMMekcgEqAPaRmCVV4OLaGER0Hlfv5V90WfQL2jz1tfucyTIfNBlm6YWkIkmmI3i1Wto="
+
 after_success:
     - echo "after_success"
     - if [ "$TRAVIS_SECURE_ENV_VARS" == true ]; then source devtools/travis-ci/after_success.sh; fi
