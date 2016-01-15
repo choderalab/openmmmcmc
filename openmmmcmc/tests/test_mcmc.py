@@ -7,34 +7,31 @@ import openmmtools.testsystems
 from openmmtools import testsystems
 
 from pymbar import timeseries
+from functools import partial
 
 from openmmmcmc.mcmc import HMCMove, GHMCMove, LangevinDynamicsMove, MonteCarloBarostatMove
 import logging
 
 # Test various combinations of systems and MCMC schemes
 analytical_testsystems = [
-    ("HarmonicOscillatorArray", [ GHMCMove() ]),
-    ("HarmonicOscillatorArray", { GHMCMove() : 0.5, HMCMove() : 0.5 }),
-    ("HarmonicOscillatorArray", [ LangevinDynamicsMove() ]),
-    ("IdealGas", [ HMCMove(), MonteCarloBarostatMove() ])
+    ("HarmonicOscillator", testsystems.HarmonicOscillator(), [ GHMCMove() ]),
+    ("HarmonicOscillator", testsystems.HarmonicOscillator(), { GHMCMove() : 0.5, HMCMove() : 0.5 }),
+    ("HarmonicOscillatorArray", testsystems.HarmonicOscillatorArray(N=4), [ LangevinDynamicsMove() ]),
+    ("IdealGas", testsystems.IdealGas(nparticles=64), [ HMCMove(), MonteCarloBarostatMove() ])
     ]
 
 NSIGMA_CUTOFF = 6.0 # cutoff for significance testing
 
 debug = False # set to True only for manual debugging of this nose test
 
-def test_doctest():
-    import doctest
-    from openmmmcmc import mcmc
-    doctest.testmod(mcmc)
-
 def test_minimizer_all_testsystems():
-    testsystem_classes = testsystems.TestSystem.__subclasses__()
-    
+    #testsystem_classes = testsystems.TestSystem.__subclasses__()
+    testsystem_classes = [ testsystems.AlanineDipeptideVacuum ]
+
     for testsystem_class in testsystem_classes:
         class_name = testsystem_class.__name__
         logging.info("Testing minimization with testsystem %s" % class_name)
-        
+
         testsystem = testsystem_class()
 
         from openmmmcmc import mcmc
@@ -42,24 +39,27 @@ def test_minimizer_all_testsystems():
 
         # Check if NaN.
         if np.isnan(sampler_state.potential_energy / units.kilocalories_per_mole):
-            raise Exception("Initial energy of system %s yielded NaN" % class_name)        
+            raise Exception("Initial energy of system %s yielded NaN" % class_name)
 
         # Minimize
         #sampler_state.minimize(maxIterations=0)
-        
+
         # Check if NaN.
         if np.isnan(sampler_state.potential_energy / units.kilocalories_per_mole):
-            raise Exception("Minimization of system %s yielded NaN" % class_name)        
+            raise Exception("Minimization of system %s yielded NaN" % class_name)
 
 def test_mcmc_expectations():
     # Select system:
-    for [system_name, move_set] in analytical_testsystems:
+    for [system_name, testsystem, move_set] in analytical_testsystems:
         testsystem_class = getattr(openmmtools.testsystems, system_name)
-        testsystem = testsystem_class()
         subtest_mcmc_expectation(testsystem, move_set)
+        f = partial(subtest_mcmc_expectation, testsystem, move_set)
+        f.description = "Testing MCMC expectation for %s" % system_name
+        logging.info(f.description)
+        yield f
 
 def subtest_mcmc_expectation(testsystem, move_set):
-    if debug: 
+    if debug:
         print(testsystem.__class__.__name__)
         print(str(move_set))
 
@@ -71,7 +71,7 @@ def subtest_mcmc_expectation(testsystem, move_set):
 
     # Retrieve system and positions.
     [system, positions] = [testsystem.system, testsystem.positions]
-    
+
     platform_name = 'Reference'
     from simtk.openmm import Platform
     platform = Platform.getPlatformByName(platform_name)
@@ -118,7 +118,7 @@ def subtest_mcmc_expectation(testsystem, move_set):
         total_energy = sampler_state.total_energy
         instantaneous_temperature = kinetic_energy * 2.0 / ndof / (units.BOLTZMANN_CONSTANT_kB * units.AVOGADRO_CONSTANT_NA)
         volume = sampler_state.volume
-        
+
         #print "potential %8.1f kT | kinetic %8.1f kT | total %8.1f kT | volume %8.3f nm^3 | instantaneous temperature: %8.1f K" % (potential_energy/kT, kinetic_energy/kT, total_energy/kT, volume/(units.nanometers**3), instantaneous_temperature/units.kelvin)
 
         # Accumulate statistics.
@@ -137,7 +137,7 @@ def subtest_mcmc_expectation(testsystem, move_set):
             if debug: print("Skipping potential test since variance is zero.")
         if not skip_test:
             potential_expectation = testsystem.get_potential_expectation(thermodynamic_state) / kT
-            potential_mean = potential_n.mean()            
+            potential_mean = potential_n.mean()
             g = timeseries.statisticalInefficiency(potential_n, fast=True)
             dpotential_mean = potential_n.std() / np.sqrt(niterations / g)
             potential_error = potential_mean - potential_expectation
@@ -151,7 +151,7 @@ def subtest_mcmc_expectation(testsystem, move_set):
                 print("observed %10.5f +- %10.5f kT | expected %10.5f | error %10.5f +- %10.5f (%.1f sigma)" % (potential_mean, dpotential_mean, potential_expectation, potential_error, dpotential_mean, nsigma))
                 if test_passed:
                     print("TEST PASSED")
-                else:                
+                else:
                     print("TEST FAILED")
                 print("----------------------------------------------------------------------------")
 
@@ -163,7 +163,7 @@ def subtest_mcmc_expectation(testsystem, move_set):
             if debug: print("Skipping volume test.")
         if not skip_test:
             volume_expectation = testsystem.get_volume_expectation(thermodynamic_state) / (units.nanometers**3)
-            volume_mean = volume_n.mean()            
+            volume_mean = volume_n.mean()
             g = timeseries.statisticalInefficiency(volume_n, fast=True)
             dvolume_mean = volume_n.std() / np.sqrt(niterations / g)
             volume_error = volume_mean - volume_expectation
@@ -177,11 +177,11 @@ def subtest_mcmc_expectation(testsystem, move_set):
                 print("observed %10.5f +- %10.5f kT | expected %10.5f | error %10.5f +- %10.5f (%.1f sigma)" % (volume_mean, dvolume_mean, volume_expectation, volume_error, dvolume_mean, nsigma))
                 if test_passed:
                     print("TEST PASSED")
-                else:                
+                else:
                     print("TEST FAILED")
                 print("----------------------------------------------------------------------------")
 
-                
+
 
 #=============================================================================================
 # MAIN AND TESTS
