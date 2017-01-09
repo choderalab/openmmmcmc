@@ -460,6 +460,11 @@ class ThermodynamicState(object):
             self._set_barostat_temperature(barostat, value)
 
     @property
+    def beta(self):
+        """Thermodynamic beta 1/(kB*T) (read-only)."""
+        return 1.0 / (unit.BOLTZMANN_CONSTANT_kB * self.temperature)
+
+    @property
     def pressure(self):
         """Constant pressure of the thermodynamic state.
 
@@ -586,13 +591,12 @@ class ThermodynamicState(object):
         if n_particles != self.n_particles:
             raise ThermodynamicsError(ThermodynamicsError.INCOMPATIBLE_SAMPLER_STATE)
 
-        beta = 1.0 / (unit.BOLTZMANN_CONSTANT_kB * self.temperature)
         reduced_potential = potential_energy
         reduced_potential = reduced_potential / unit.AVOGADRO_CONSTANT_NA
         pressure = self.pressure
         if pressure is not None:
             reduced_potential += pressure * volume
-        return beta * reduced_potential
+        return self.beta * reduced_potential
 
     def is_state_compatible(self, thermodynamic_state):
         """Check compatibility between ThermodynamicStates.
