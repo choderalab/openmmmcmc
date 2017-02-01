@@ -22,7 +22,7 @@ script:
   # Install the package
   - conda install --yes --use-local ${PACKAGENAME}-dev
   # Test the package
-  - cd devtools && nosetests $PACKAGENAME --nocapture --nologcapture --verbosity=2 --with-doctest --with-timer && cd ..
+  - cd devtools && nosetests $PACKAGENAME --nocapture --nologcapture --verbosity=2 --with-doctest && cd ..
 
 env:
   matrix:
