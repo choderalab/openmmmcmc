@@ -46,7 +46,7 @@ __version__ = VERSION
 CLASSIFIERS = """\
 Intended Audience :: Science/Research
 Intended Audience :: Developers
-License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)
+License :: OSI Approved :: MIT License
 Programming Language :: C++
 Programming Language :: Python
 Development Status :: 4 - Beta
@@ -56,11 +56,10 @@ Operating System :: POSIX
 Operating System :: Unix
 Operating System :: MacOS
 Programming Language :: Python :: 2
-Programming Language :: Python :: 2.6
 Programming Language :: Python :: 2.7
 Programming Language :: Python :: 3
-Programming Language :: Python :: 3.3
 Programming Language :: Python :: 3.4
+Programming Language :: Python :: 3.5
 """
 
 extensions = []
@@ -71,7 +70,7 @@ setup(name='openmmmcmc',
       description=DOCLINES[0],
       long_description="\n".join(DOCLINES[2:]),
       version=__version__,
-      url='https://github.com/choderalab/openmm-mcmc',
+      url='https://github.com/choderalab/openmmmcmc',
       platforms=['Linux', 'Mac OS-X', 'Unix'],
       classifiers=CLASSIFIERS.splitlines(),
       packages=['openmmmcmc', 'openmmmcmc.tests'],
