@@ -16,13 +16,13 @@ script:
   # Activate the test environment
   - source activate test
   # Add omnia dev channels
-  - conda config --add channels omnia
+  - conda config --add channels https://conda.anaconda.org/omnia
   # Build the recipe
   - conda build devtools/conda-recipe
   # Install the package
   - conda install --yes --use-local ${PACKAGENAME}-dev
   # Test the package
-  - cd devtools && nosetests $PACKAGENAME --nocapture --nologcapture --verbosity=2 --with-doctest && cd ..
+  - cd devtools && nosetests $PACKAGENAME --nocapture --nologcapture --verbosity=2 && cd ..
 
 env:
   matrix:
