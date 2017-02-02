@@ -3,7 +3,6 @@ import numpy as np
 import simtk.openmm as openmm
 import simtk.unit as units
 
-import openmmtools.testsystems
 from openmmtools import testsystems
 
 from pymbar import timeseries
@@ -14,10 +13,15 @@ import logging
 
 # Test various combinations of systems and MCMC schemes
 analytical_testsystems = [
-    ("HarmonicOscillator", testsystems.HarmonicOscillator(), [ GHMCMove(timestep=10.0*units.femtoseconds,nsteps=100) ]),
-    ("HarmonicOscillator", testsystems.HarmonicOscillator(), { GHMCMove(timestep=10.0*units.femtoseconds,nsteps=100) : 0.5, HMCMove(timestep=10*units.femtosecond, nsteps=10) : 0.5 }),
-    ("HarmonicOscillatorArray", testsystems.HarmonicOscillatorArray(N=4), [ LangevinDynamicsMove(timestep=10.0*units.femtoseconds,nsteps=100) ]),
-    ("IdealGas", testsystems.IdealGas(nparticles=216), [ HMCMove(timestep=10*units.femtosecond, nsteps=10), MonteCarloBarostatMove() ])
+    ("HarmonicOscillator", testsystems.HarmonicOscillator(),
+        [GHMCMove(timestep=10.0*units.femtoseconds,nsteps=100)]),
+    ("HarmonicOscillator", testsystems.HarmonicOscillator(),
+        {GHMCMove(timestep=10.0*units.femtoseconds,nsteps=100): 0.5,
+         HMCMove(timestep=10*units.femtosecond, nsteps=10): 0.5}),
+    ("HarmonicOscillatorArray", testsystems.HarmonicOscillatorArray(N=4),
+        [LangevinDynamicsMove(timestep=10.0*units.femtoseconds,nsteps=100)]),
+    ("IdealGas", testsystems.IdealGas(nparticles=216),
+        [HMCMove(timestep=10*units.femtosecond, nsteps=10)])
     ]
 
 NSIGMA_CUTOFF = 6.0 # cutoff for significance testing
@@ -51,7 +55,6 @@ def test_minimizer_all_testsystems():
 def test_mcmc_expectations():
     # Select system:
     for [system_name, testsystem, move_set] in analytical_testsystems:
-        testsystem_class = getattr(openmmtools.testsystems, system_name)
         subtest_mcmc_expectation(testsystem, move_set)
         f = partial(subtest_mcmc_expectation, testsystem, move_set)
         f.description = "Testing MCMC expectation for %s" % system_name
@@ -65,7 +68,6 @@ def subtest_mcmc_expectation(testsystem, move_set):
 
     # Test settings.
     temperature = 298.0 * units.kelvin
-    pressure = 1.0 * units.atmospheres
     nequil = 10 # number of equilibration iterations
     niterations = 40 # number of production iterations
 
@@ -83,7 +85,7 @@ def subtest_mcmc_expectation(testsystem, move_set):
 
     # Create thermodynamic state
     from openmmmcmc.thermodynamics import ThermodynamicState
-    thermodynamic_state = ThermodynamicState(system=testsystem.system, temperature=temperature, pressure=pressure)
+    thermodynamic_state = ThermodynamicState(system=testsystem.system, temperature=temperature)
 
     # Create MCMC sampler.
     from openmmmcmc.mcmc import MCMCSampler
